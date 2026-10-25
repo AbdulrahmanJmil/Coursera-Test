@@ -1,0 +1,51 @@
+name: RoundLedger CI
+
+on:
+  push:
+    paths: ['roundledger/**', '.github/workflows/roundledger-ci.yml']
+  pull_request:
+    paths: ['roundledger/**', '.github/workflows/roundledger-ci.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: roundledger
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install packaging tools (NSIS, 7-Zip)
+        run: sudo apt-get update && sudo apt-get install -y nsis p7zip-full
+      - name: Unit, API, build and packaging tests
+        run: npm test
+
+  browser:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: roundledger
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium (test-only, not a runtime dependency)
+        run: |
+          npm install --no-save --no-package-lock playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Extension and dashboard browser tests
+        run: npm run test:ui
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots
+          path: |
+            roundledger/dist/ui-test/
+            roundledger/dist/admin-ui-test/
