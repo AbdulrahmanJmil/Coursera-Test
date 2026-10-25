@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="RoundLedger">
+  <title>RoundLedger</title>
+  <polygon points="20,6 108,6 122,20 122,108 108,122 20,122 6,108 6,20" fill="#060B12" stroke="#34F08A" stroke-width="8" stroke-linejoin="miter"/>
+  <rect x="30" y="36" width="62" height="12" fill="#34F08A"/>
+  <rect x="30" y="58" width="40" height="12" fill="#34F08A"/>
+  <rect x="78" y="58" width="12" height="12" fill="#34F08A" opacity="0.45"/>
+  <rect x="30" y="80" width="54" height="12" fill="#34F08A"/>
+</svg>

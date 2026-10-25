@@ -1,0 +1,16 @@
+{
+  "_note": "SYNTHETIC fixture. Hand-written to match the SignalR JSON hub framing and the field names reported in third-party observations of the MelBet crash game (OnStage.l, OnCrash.f). NOT captured from live traffic and NOT evidence that the platform currently behaves this way.",
+  "socketUrl": "wss://example.invalid/games-frame/sockets/crash?id=1",
+  "frames": [
+    "{\"type\":1,\"target\":\"OnRegistration\",\"arguments\":[{\"l\":5001,\"s\":1,\"h\":[{\"f\":1.2},{\"f\":3.4}]}]}\u001e",
+    "{\"type\":6}\u001e",
+    "{\"type\":1,\"target\":\"OnStage\",\"arguments\":[{\"l\":5002}]}\u001e{\"type\":1,\"target\":\"OnBetting\",\"arguments\":[{}]}\u001e",
+    "{\"type\":1,\"target\":\"OnStart\",\"arguments\":[{}]}\u001e",
+    "{\"type\":1,\"target\":\"OnProfits\",\"arguments\":[{\"x\":1}]}\u001e",
+    "{\"type\":1,\"target\":\"OnCrash\",\"arguments\":[{\"f\":2.47}]}\u001e",
+    "{\"type\":1,\"target\":\"OnCrash\",\"arguments\":[{\"f\":2.47}]}\u001e",
+    "{\"type\":1,\"target\":\"OnStage\",\"arguments\":[{\"l\":5003}]}\u001e",
+    "not json at all\u001e",
+    "{\"type\":1,\"target\":\"OnCrash\",\"arguments\":[{\"f\":\"1.03\"}]}\u001e"
+  ]
+}

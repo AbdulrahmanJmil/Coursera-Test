@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoundLedger setup</title>
+<style>
+  :root { --bg:#05080d; --panel:#0a111b; --line:#16324a; --green:#34f08a; --text:#d7e3ea; --muted:#7c93a3; --warn:#f2c14e; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 system-ui, "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 48px; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  header img { width: 40px; height: 40px; }
+  h1 { font-size: 24px; margin: 0; }
+  h1 span { color: var(--green); }
+  .lead { color: var(--muted); margin: 0 0 24px; }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 12px; }
+  ol.steps > li { counter-increment: s; background: var(--panel); border: 1px solid var(--line); padding: 14px 16px 14px 56px; position: relative;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 16px; top: 13px; width: 26px; height: 26px; display: grid; place-items: center;
+    border: 1px solid var(--green); color: var(--green); font: 700 13px ui-monospace, Consolas, monospace; }
+  b { color: #fff; }
+  .copy { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  code { font: 13px ui-monospace, Consolas, monospace; background: #060c14; border: 1px solid var(--line); padding: 6px 8px; word-break: break-all; flex: 1; min-width: 220px; }
+  button { background: var(--green); color: #04110a; border: 0; padding: 6px 14px; font-weight: 600; cursor: pointer; }
+  .note { color: var(--muted); font-size: 13px; }
+  h2 { font: 600 13px ui-monospace, Consolas, monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--green); margin: 32px 0 8px; }
+  details { background: var(--panel); border: 1px solid var(--line); padding: 10px 14px; margin-bottom: 8px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .warn { border-left: 3px solid var(--warn); padding: 8px 12px; background: rgba(242,193,78,.06); margin-top: 24px; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="roundledger.ico" alt=""><h1>Round<span>Ledger</span> setup</h1></header>
+  <p class="lead">Version <span id="ver">—</span>. The files are installed. Chrome requires you to add this extension yourself. It takes about a minute.</p>
+
+  <ol class="steps">
+    <li><b>Open Chrome's extensions page.</b> Copy this address, paste it into Chrome's address bar and press Enter (Chrome does not allow web pages to open it directly).
+      <div class="copy"><code id="extUrl">chrome://extensions</code><button data-copy="extUrl">Copy</button></div></li>
+    <li><b>Turn on "Developer mode"</b> with the switch in the top-right corner of that page.</li>
+    <li><b>Click "Load unpacked"</b> and select this folder:
+      <div class="copy"><code id="extPath">%LOCALAPPDATA%\RoundLedger\extension</code><button data-copy="extPath">Copy</button></div>
+      <p class="note">Tip: in the folder picker, paste the path into the address bar at the top and press Enter, then click "Select Folder".</p></li>
+    <li><b>Pin RoundLedger.</b> Click the puzzle-piece icon in Chrome's toolbar, then the pin next to RoundLedger. Click the RoundLedger icon to open its side panel.</li>
+    <li><b>Sign in or create an account</b> in the side panel, then start your free trial or enter your activation code.</li>
+    <li><b>Allow access to the game page</b> when the panel asks, then reload the game tab. RoundLedger only reads round results; it never places bets.</li>
+  </ol>
+
+  <div class="warn">Chrome may show <i>"Disable developer mode extensions"</i> when it starts. Choose <b>Keep</b> or close the message. This is Chrome's standard reminder for extensions not installed from the Chrome Web Store.</div>
+
+  <h2>Troubleshooting</h2>
+  <details><summary>There is no "Developer mode" switch or "Load unpacked" button</summary>
+    <p>Your Chrome is managed by an organization (a work or school device) and policy blocks unpacked extensions. RoundLedger cannot be installed on this browser. Use a personal computer or ask your administrator.</p></details>
+  <details><summary>"Manifest file is missing or unreadable"</summary>
+    <p>You selected the wrong folder. Select the <code>extension</code> folder itself (the one containing <code>manifest.json</code>), not its parent.</p></details>
+  <details><summary>Updating to a new version</summary>
+    <p>Run the new installer. Then open <code>chrome://extensions</code> and click the circular reload arrow on the RoundLedger card, or restart Chrome. Your sign-in and history are kept.</p></details>
+  <details><summary>Checking the installed files</summary>
+    <p>In the RoundLedger folder, right-click <code>verify-files.ps1</code> and choose "Run with PowerShell". It compares every file with the published SHA-256 checksums.</p></details>
+  <details><summary>Uninstalling</summary>
+    <p>Click <b>Remove</b> on the RoundLedger card in <code>chrome://extensions</code>, then uninstall RoundLedger from Windows Settings → Apps.</p></details>
+
+  <p class="note" style="margin-top:32px">Results in crash games are random. RoundLedger describes past rounds and does not predict future ones. Gamble only what you can afford to lose. Help: <a href="https://www.begambleaware.org/" style="color:var(--green)">begambleaware.org</a></p>
+</div>
+<script src="install-info.js"></script>
+<script>
+  if (window.RL_INSTALL) {
+    document.getElementById('extPath').textContent = window.RL_INSTALL.path;
+    document.getElementById('ver').textContent = window.RL_INSTALL.version;
+  }
+  for (const b of document.querySelectorAll('[data-copy]')) {
+    b.addEventListener('click', () => {
+      const text = document.getElementById(b.dataset.copy).textContent;
+      navigator.clipboard.writeText(text).then(() => { b.textContent = 'Copied'; setTimeout(() => (b.textContent = 'Copy'), 1500); },
+        () => { const r = document.createRange(); r.selectNodeContents(document.getElementById(b.dataset.copy)); getSelection().removeAllRanges(); getSelection().addRange(r); });
+    });
+  }
+</script>
+</body>
+</html>

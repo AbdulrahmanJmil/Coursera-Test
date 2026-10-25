@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoundLedger</title>
+  <link rel="stylesheet" href="panel.css">
+  <script type="module" src="panel.js"></script>
+</head>
+<body>
+  <header class="hdr">
+    <canvas class="rain" aria-hidden="true" data-decorative="true"></canvas>
+    <img class="logo" src="../../icons/icon32.png" alt="" width="22" height="22">
+    <div class="brand"><span id="productName">RoundLedger</span></div>
+    <div class="pills">
+      <span class="pill" id="pillBackend" title="Backend connection"><i></i><b>API</b></span>
+      <span class="pill" id="pillPlatform" title="Game connection"><i></i><b>GAME</b></span>
+    </div>
+    <button class="icon-btn" id="btnSettings" title="Settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+    </button>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <main id="view"></main>
+
+  <footer class="ftr">
+    <span>Results are random. Past rounds do not predict the next one.</span>
+    <a id="rgLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Get help</a>
+  </footer>
+
+  <template id="tpl-loading">
+    <section class="panel center"><p class="mono muted">Connecting<span class="cursor">_</span></p></section>
+  </template>
+
+  <template id="tpl-signin">
+    <section class="panel">
+      <h2 class="ttl" data-mode-title>Sign in</h2>
+      <form id="authForm" class="form" autocomplete="on" novalidate>
+        <label>Email<input name="email" type="email" required autocomplete="username" maxlength="254"></label>
+        <label>Password<input name="password" type="password" required minlength="10" autocomplete="current-password" maxlength="200"></label>
+        <p class="hint" data-register-hint hidden>At least 10 characters, with letters and numbers.</p>
+        <button class="btn primary" type="submit" data-submit>Sign in</button>
+        <p class="err" data-error role="alert"></p>
+      </form>
+      <button class="link" data-toggle>Create an account</button>
+    </section>
+  </template>
+
+  <template id="tpl-devices-full">
+    <section class="panel">
+      <h2 class="ttl">Device limit reached</h2>
+      <p class="muted" data-msg></p>
+      <ul class="list" data-list></ul>
+      <p class="err" data-error role="alert"></p>
+      <button class="link" data-cancel>Cancel</button>
+    </section>
+  </template>
+
+  <template id="tpl-license">
+    <section class="panel">
+      <h2 class="ttl">Activate RoundLedger</h2>
+      <p class="muted" data-state></p>
+      <div data-trial hidden>
+        <button class="btn primary" data-start-trial>Start free trial</button>
+        <p class="hint" data-trial-hint></p>
+      </div>
+      <form class="form row" data-redeem novalidate>
+        <label class="grow">Activation code<input name="code" placeholder="RL-XXXX-XXXX-XXXX-XXXX" maxlength="40" autocomplete="off" spellcheck="false"></label>
+        <button class="btn" type="submit">Activate</button>
+      </form>
+      <p class="err" data-error role="alert"></p>
+      <div data-plans></div>
+    </section>
+  </template>
+
+  <template id="tpl-main">
+    <nav class="tabs" role="tablist" data-tabs></nav>
+    <section class="panel">
+      <div class="status-row"><span class="tag" data-verified></span><span class="mono small" data-pstatus></span></div>
+      <div data-permission hidden class="callout">
+        <p data-permission-text></p>
+        <button class="btn primary" data-grant>Allow access to game pages</button>
+      </div>
+      <div class="hero">
+        <div>
+          <div class="lbl">Last result</div>
+          <div class="big mono" data-last>—</div>
+        </div>
+        <div class="right">
+          <div class="lbl">Round</div>
+          <div class="mono" data-round>—</div>
+          <div class="mono small muted" data-phase></div>
+        </div>
+      </div>
+      <div class="grid" data-stats></div>
+      <div class="dist" data-dist aria-label="Distribution of recorded results"></div>
+      <div class="chips" data-chips></div>
+    </section>
+
+    <section class="panel">
+      <h3 class="sub">Pattern check <span class="muted small">"is it due?"</span></h3>
+      <p class="small" data-pattern></p>
+    </section>
+
+    <section class="panel">
+      <h3 class="sub">AI explanation</h3>
+      <p class="small muted" data-ai-status></p>
+      <button class="btn" data-ai-run hidden>Explain my statistics</button>
+      <div class="ai-out" data-ai-out hidden></div>
+    </section>
+
+    <section class="panel console" aria-live="polite">
+      <h3 class="sub">Live log <span class="muted small">real events only</span></h3>
+      <ol class="mono" data-console></ol>
+    </section>
+
+    <section class="panel session">
+      <span class="mono small" data-session></span>
+      <button class="link small" data-session-reset>Reset</button>
+    </section>
+  </template>
+
+  <template id="tpl-settings">
+    <section class="panel">
+      <div class="status-row"><h2 class="ttl">Settings</h2><button class="link" data-back>← Back</button></div>
+      <h3 class="sub">Account</h3>
+      <dl class="kv" data-account></dl>
+      <form class="form row" data-redeem novalidate>
+        <label class="grow">Add activation code<input name="code" placeholder="RL-XXXX-XXXX-XXXX-XXXX" maxlength="40" autocomplete="off" spellcheck="false"></label>
+        <button class="btn" type="submit">Add</button>
+      </form>
+      <p class="err" data-error role="alert"></p>
+      <button class="btn ghost" data-logout>Sign out</button>
+    </section>
+    <section class="panel">
+      <h3 class="sub">Devices</h3>
+      <ul class="list" data-devices><li class="muted small">Loading…</li></ul>
+    </section>
+    <section class="panel">
+      <h3 class="sub">Game page access</h3>
+      <ul class="list" data-perms></ul>
+    </section>
+    <section class="panel">
+      <h3 class="sub">Session reminder</h3>
+      <label class="row small">Remind me after <input class="num" type="number" min="0" max="600" step="5" data-reminder> minutes (0 = off)</label>
+    </section>
+    <section class="panel">
+      <h3 class="sub">Data</h3>
+      <dl class="kv" data-data></dl>
+      <div class="row">
+        <button class="btn" data-sync>Sync now</button>
+        <button class="btn danger" data-clear>Clear local history</button>
+      </div>
+    </section>
+    <section class="panel">
+      <h3 class="sub">Diagnostics</h3>
+      <dl class="kv mono small" data-diag></dl>
+    </section>
+  </template>
+</body>
+</html>

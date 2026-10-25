@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>RoundLedger Admin</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div id="login" class="login" hidden>
+    <form id="loginForm" class="card login-card" novalidate>
+      <div class="brandline"><img src="logo.svg" alt="" width="28" height="28"><span>RoundLedger <small>admin</small></span></div>
+      <label>Email<input name="email" type="email" autocomplete="username" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary" type="submit">Sign in</button>
+      <p class="err" id="loginError" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="shell" class="shell" hidden>
+    <aside class="side">
+      <div class="brandline"><img src="logo.svg" alt="" width="24" height="24"><span>RoundLedger <small>admin</small></span></div>
+      <nav id="nav">
+        <a href="#/overview">Overview</a>
+        <a href="#/users">Users</a>
+        <a href="#/subscriptions">Subscriptions</a>
+        <a href="#/plans">Plans</a>
+        <a href="#/codes">Activation codes</a>
+        <a href="#/devices">Devices</a>
+        <a href="#/ai">AI providers</a>
+        <a href="#/settings">Settings</a>
+        <a href="#/audit">Audit log</a>
+        <a href="#/errors">Client errors</a>
+      </nav>
+      <div class="whoami"><span id="whoami"></span><button class="link" id="logout">Sign out</button></div>
+    </aside>
+    <main id="main" tabindex="-1"></main>
+  </div>
+
+  <dialog id="dialog"><form method="dialog" id="dialogForm"></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

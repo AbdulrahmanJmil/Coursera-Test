@@ -1,0 +1,22 @@
+{
+  "name": "roundledger",
+  "version": "0.1.0",
+  "private": true,
+  "description": "RoundLedger: crash-game round history, statistics and session tracking (Chrome extension, backend and admin dashboard).",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/src/main.js",
+    "create-admin": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/scripts/create-admin.js",
+    "seed-plans": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/scripts/seed-plans.js",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 --test-reporter=spec \"shared/test/*.test.js\" \"server/test/*.test.js\" \"extension/test/*.test.js\" \"installer/test/*.test.js\"",
+    "build:icons": "node scripts/build-icons.js",
+    "build:extension": "node scripts/build-extension.js",
+    "build:installer": "node scripts/build-installer.js",
+    "test:ui": "node --disable-warning=ExperimentalWarning scripts/ui-test.js && node --disable-warning=ExperimentalWarning scripts/admin-ui-test.js",
+    "release": "node scripts/release.js"
+  }
+}
